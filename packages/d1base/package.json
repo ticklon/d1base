@@ -1,0 +1,22 @@
+{
+  "name": "d1base",
+  "version": "0.1.0",
+  "description": "Supabase-like query builder for Cloudflare D1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run"
+  },
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "@cloudflare/workers-types": "^4.0.0"
+  }
+}
