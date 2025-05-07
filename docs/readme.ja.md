@@ -1,35 +1,35 @@
 # d1base
 
-A Supabase-inspired type-safe data client for Cloudflare D1
+Cloudflare D1をバックエンドに用いた、Supabase風の型安全データクライアント
 
-## Overview
+## 概要
 
-d1base is a type-safe query builder for easily manipulating Cloudflare D1 databases. Inspired by the Supabase client library, it offers a user-friendly interface with the following features:
+d1baseは、Cloudflare D1データベースを簡単に操作するための型安全なクエリビルダーです。Supabaseクライアントライブラリに触発された使いやすいインターフェースを提供し、以下の特徴があります：
 
-- Chainable API (`.from().select().where()...`)
-- Type safety with TypeScript
-- SQL injection protection with bind execution
-- Automatic JOIN fetching for relational data (avoiding N+1 problems)
-- Intuitive error handling
+- チェーン可能なAPI（`.from().select().where()...`）
+- TypeScriptによる型安全性
+- SQLインジェクション対策のバインド実行
+- リレーションデータの自動JOIN取得（N+1問題回避）
+- 直感的なエラーハンドリング
 
-## Installation
+## インストール
 
 ```bash
 npm install d1base
 ```
 
-## Basic Usage
+## 基本的な使い方
 
 ```typescript
 import { getDbClient } from 'd1base';
 
-// Usage in Cloudflare Workers/Pages
+// Cloudflare Workers/Pagesでの利用
 export default {
   async fetch(request: Request, env: any) {
-    // Initialize the database client
+    // データベースクライアントの初期化
     const db = getDbClient(env);
     
-    // Fetch user list
+    // ユーザー一覧を取得
     const { data: users, error } = await db
       .from('users')
       .select('*')
@@ -39,12 +39,12 @@ export default {
       .execute();
     
     if (error) {
-      return new Response(`An error occurred: ${error.message}`, {
+      return new Response(`エラーが発生しました: ${error.message}`, {
         status: 500,
       });
     }
     
-    // Return user list in JSON format
+    // JSON形式でユーザー一覧を返す
     return new Response(JSON.stringify({ users }), {
       headers: {
         'Content-Type': 'application/json',
@@ -54,18 +54,18 @@ export default {
 };
 ```
 
-## Key Features
+## 主要機能
 
-### SELECT Operations
+### SELECT操作
 
 ```typescript
-// Basic SELECT
+// 基本的なSELECT
 const { data } = await db
   .from('posts')
   .select('id, title, content')
   .execute();
 
-// SELECT with conditions, order, and limit
+// 条件と並び順、制限付きSELECT
 const { data } = await db
   .from('posts')
   .select('*')
@@ -74,14 +74,14 @@ const { data } = await db
   .limit(10)
   .execute();
 
-// Fetch single record (error if none)
+// 単一レコード取得（結果がない場合はエラー）
 const post = await db
   .from('posts')
   .select('*')
   .where('id', '=', postId)
   .single();
 
-// Fetch single record (null if none)
+// 単一レコード取得（結果がない場合はnull）
 const post = await db
   .from('posts')
   .select('*')
@@ -89,39 +89,39 @@ const post = await db
   .maybeSingle();
 ```
 
-### INSERT Operations
+### INSERT操作
 
 ```typescript
-// Insert a record
+// レコードの挿入
 await db
   .from('posts')
   .insert({
-    title: 'New Post',
-    content: 'Content here',
+    title: '新しい投稿',
+    content: '本文です',
     user_id: userId,
     created_at: new Date().toISOString(),
   })
   .execute();
 ```
 
-### UPDATE Operations
+### UPDATE操作
 
 ```typescript
-// Update a record
+// レコードの更新
 await db
   .from('posts')
   .update({
-    title: 'Updated Title',
+    title: '更新済みタイトル',
     updated_at: new Date().toISOString(),
   })
   .where('id', '=', postId)
   .execute();
 ```
 
-### DELETE Operations
+### DELETE操作
 
 ```typescript
-// Delete a record
+// レコードの削除
 await db
   .from('posts')
   .delete()
@@ -129,17 +129,17 @@ await db
   .execute();
 ```
 
-### Fetching Relation Data
+### リレーションデータの取得
 
 ```typescript
-// Fetch users and their posts at once
+// ユーザーとその投稿を一度に取得
 const { data: users } = await db
   .from('users')
   .select(['id', 'name', { posts: ['id', 'title', 'content'] }])
   .where('status', '=', 'active')
   .execute();
 
-// Fetch posts with their authors and comments (multi-level relations)
+// 投稿とその投稿者、コメントを一度に取得（多階層リレーション）
 const { data: posts } = await db
   .from('posts')
   .select([
@@ -153,12 +153,12 @@ const { data: posts } = await db
   .execute();
 ```
 
-## Type Safety
+## 型安全性
 
-When using TypeScript, you can create type definitions for each table to achieve complete type safety.
+TypeScriptを利用する場合、テーブルごとに型定義を作成することで、完全な型安全性を得られます。
 
 ```typescript
-// Table type definitions
+// テーブルの型定義
 interface User {
   id: string;
   name: string;
@@ -175,23 +175,23 @@ interface Post {
   created_at: string;
 }
 
-// Usage example with type information
+// 型情報を含めた使用例
 const { data } = await db
-  .from<User>('users')  // Recognized as User table
+  .from<User>('users')  // Userテーブルとして認識
   .select('*')
   .where('status', '=', 'active')
   .execute();
 
-// data is of type User[]
+// dataは User[] 型になる
 data.forEach(user => {
-  console.log(user.name);  // Type completion works
+  console.log(user.name);  // 型補完が効く
 });
 ```
 
-## License
+## ライセンス
 
 MIT
 
-## Contributing
+## コントリビューション
 
-Bug reports and feature requests are accepted through GitHub Issues. For more details, see the [contributing guidelines](./docs/contributing.md).
+バグ報告や機能リクエストは、GitHubのIssueで受け付けています。

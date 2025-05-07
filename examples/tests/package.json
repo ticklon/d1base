@@ -1,0 +1,10 @@
+{
+  "name": "d1base-test",
+  "version": "1.0.0",
+  "description": "Test for d1base module",
+  "type": "module",
+  "scripts": {
+    "test:app": "node --experimental-vm-modules test-app.js",
+    "test:manual": "node --experimental-vm-modules test-manual.js"
+  }
+}
