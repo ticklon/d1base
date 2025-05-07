@@ -1,5 +1,5 @@
-import { QueryBuilder } from './builder';
-import type { DbClient } from './types';
+import { QueryBuilder } from './builder.js';
+import type { DbClient } from './types.js';
 import type { D1Database } from '@cloudflare/workers-types';
 
 /**

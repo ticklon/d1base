@@ -3,7 +3,7 @@ import type {
   WhereCondition, 
   OrderCondition, 
   JoinCondition 
-} from './types';
+} from './types.js';
 
 /**
  * SQLクエリを生成し、バインドパラメータを準備するユーティリティクラス

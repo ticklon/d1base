@@ -1,4 +1,4 @@
-import { QueryBuilder } from './builder';
+import { QueryBuilder } from './builder.js';
 
 /**
  * データベースクライアントインターフェース

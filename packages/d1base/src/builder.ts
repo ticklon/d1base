@@ -1,10 +1,10 @@
-import { SqlBuilder } from './sql';
+import { SqlBuilder } from './sql.js';
 import type { 
   QueryState, 
   WhereCondition, 
   OrderCondition, 
   QueryResult 
-} from './types';
+} from './types.js';
 import type { D1Database, D1Result } from '@cloudflare/workers-types';
 
 /**

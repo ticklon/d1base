@@ -1,10 +1,16 @@
 {
   "name": "d1base",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Supabase-like query builder for Cloudflare D1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist"
   ],
