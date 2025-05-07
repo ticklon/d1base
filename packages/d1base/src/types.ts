@@ -25,6 +25,8 @@ export interface QueryState {
   insert?: Record<string, any>;
   /** UPDATE時のデータ */
   update?: Record<string, any>;
+  /** DELETE操作フラグ */
+  delete?: boolean;
   /** WHERE条件の配列 */
   where: WhereCondition[];
   /** 並び順（ORDER BY）設定 */

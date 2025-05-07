@@ -5,6 +5,7 @@ import type {
   OrderCondition, 
   QueryResult 
 } from './types';
+import type { D1Database, D1Result } from '@cloudflare/workers-types';
 
 /**
  * クエリビルダークラス
@@ -69,7 +70,8 @@ export class QueryBuilder<T extends Record<string, any> = Record<string, any>> {
    * DELETE操作を設定
    */
   delete(): QueryBuilder<T> {
-    // DELETE操作の特別な状態は特になし、実行時のSQLビルダで処理
+    // DELETE操作用のフラグを設定
+    this.state.delete = true;
     return this;
   }
   
@@ -238,7 +240,6 @@ export class QueryBuilder<T extends Record<string, any> = Record<string, any>> {
       
       return mainItem;
     });
-  }
   }
   
   /**

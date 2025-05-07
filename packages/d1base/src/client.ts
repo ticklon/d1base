@@ -1,5 +1,6 @@
 import { QueryBuilder } from './builder';
 import type { DbClient } from './types';
+import type { D1Database } from '@cloudflare/workers-types';
 
 /**
  * D1データベースクライアントを初期化し、QueryBuilderを生成するための関数
