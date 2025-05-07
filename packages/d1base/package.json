@@ -14,8 +14,15 @@
     "lint": "eslint src --ext .ts",
     "test": "vitest run"
   },
-  "author": "",
+  "author": "Ticklon",
   "license": "MIT",
+  "keywords": [
+    "cloudflare",
+    "d1",
+    "database",
+    "query-builder",
+    "typescript"
+  ],
   "peerDependencies": {
     "@cloudflare/workers-types": "^4.0.0"
   }
