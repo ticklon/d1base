@@ -129,25 +129,45 @@ await db
   .execute();
 ```
 
+### Defining Relations
+
+You can define relations to specify custom join conditions, which is especially useful for `BelongsTo` relationships or when using non-standard column names.
+
+```typescript
+// Define a relation
+db.from('posts')
+  .defineRelation('author', {
+    table: 'users',
+    foreignKey: 'author_id', // posts.author_id
+    primaryKey: 'id',        // users.id
+  })
+  .select(['id', 'title', { author: ['name'] }])
+  .execute();
+```
+
 ### Fetching Relation Data
 
 ```typescript
-// Fetch users and their posts at once
+// Fetch users and their posts (HasMany: inferred as users.id = posts.user_id)
 const { data: users } = await db
   .from('users')
   .select(['id', 'name', { posts: ['id', 'title', 'content'] }])
   .where('status', '=', 'active')
   .execute();
 
-// Fetch posts with their authors and comments (multi-level relations)
+// Fetch posts with their authors (BelongsTo: requires definition)
 const { data: posts } = await db
   .from('posts')
+  .defineRelation('author', {
+    table: 'users',
+    foreignKey: 'author_id',
+    primaryKey: 'id'
+  })
   .select([
     'id', 
     'title', 
     { 
-      user: ['id', 'name'],
-      comments: ['id', 'content', { user: ['id', 'name'] }]
+      author: ['id', 'name']
     }
   ])
   .execute();

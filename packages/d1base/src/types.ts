@@ -14,13 +14,22 @@ export interface DbClient {
 }
 
 /**
+ * リレーション設定
+ */
+export interface RelationConfig {
+  foreignKey: string;
+  primaryKey: string;
+  table?: string; // 関連テーブル名（省略時はリレーション名と同じ）
+}
+
+/**
  * クエリの内部状態を保持する型
  */
-export interface QueryState {
+export interface QueryState<T = any> {
   /** ターゲットテーブル名 */
   table: string;
   /** SELECT時の取得カラム */
-  select?: string[] | Record<string, any>;
+  select?: (keyof T | string)[] | Record<string, any>;
   /** INSERT時のデータ */
   insert?: Record<string, any>;
   /** UPDATE時のデータ */
@@ -28,20 +37,25 @@ export interface QueryState {
   /** DELETE操作フラグ */
   delete?: boolean;
   /** WHERE条件の配列 */
-  where: WhereCondition[];
+  where: WhereCondition<T>[];
   /** 並び順（ORDER BY）設定 */
-  order?: OrderCondition[];
+  order?: OrderCondition<T>[];
   /** 取得上限（LIMIT）設定 */
   limit?: number;
   /** JOINの設定 */
   joins?: JoinCondition[];
+  /** リレーション設定 */
+  relations?: Record<string, RelationConfig>;
 }
 
 /**
  * WHEREの条件型
  */
-export interface WhereCondition {
-  column: string;
+/**
+ * WHEREの条件型
+ */
+export interface WhereCondition<T = any> {
+  column: keyof T | string;
   operator: string;
   value: any;
 }
@@ -49,8 +63,8 @@ export interface WhereCondition {
 /**
  * ORDER BY条件型
  */
-export interface OrderCondition {
-  column: string;
+export interface OrderCondition<T = any> {
+  column: keyof T | string;
   direction: 'asc' | 'desc';
 }
 

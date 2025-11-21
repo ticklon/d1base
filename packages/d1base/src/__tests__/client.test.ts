@@ -1,6 +1,7 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
-import { getDbClient } from '../src/client';
-import { QueryBuilder } from '../src/builder';
+import { getDbClient } from '../client';
+import { QueryBuilder } from '../builder';
+import type { D1Database, D1Result } from '@cloudflare/workers-types';
 
 // D1DatabaseのモッククラスとMockD1Statementの型定義
 export class MockD1Statement {
@@ -59,7 +60,7 @@ describe('getDbClient', () => {
   it('should create a DbClient instance', () => {
     const env = { DB: mockDb as unknown as D1Database };
     const db = getDbClient(env);
-    
+
     expect(db).toBeDefined();
     expect(typeof db.from).toBe('function');
   });
@@ -67,7 +68,7 @@ describe('getDbClient', () => {
   it('should create a QueryBuilder when from() is called', () => {
     const env = { DB: mockDb as unknown as D1Database };
     const db = getDbClient(env);
-    
+
     const builder = db.from('users');
     expect(builder).toBeInstanceOf(QueryBuilder);
   });
